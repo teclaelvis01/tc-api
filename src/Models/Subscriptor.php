@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Core\Database\DB;
 use App\Core\Router\Request;
 
 /**
@@ -176,5 +177,18 @@ class Subscriptor extends Model
         $this->setStatus(Subscriptor::STATUS_DELETED);
         $this->Save();
         return $this;
+    }
+
+    /**
+     * 
+     */
+    public function recalculateColletedAcumulated()
+    {
+        $db = DB::getInstance(true);
+        $sql = "SELECT SUM(amount) AS total_collected_cumulated FROM collections c WHERE c.subscriptor_id = " . $this->getId() . " AND c.result = '" . Collection::RESULT_OK."'";
+        $result = $db->query($sql);
+        $total = $result ? $result->total_collected_cumulated : 0;
+        $this->setTotalCollectedCumulated($total);
+        $this->Update();
     }
 }

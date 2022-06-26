@@ -113,7 +113,7 @@ class NotificationsController extends BaseController
 
             Response::json([
                 "status" => "success",
-                "message" => ["the subscriptor has been down"],
+                "message" => ["payment has been created"],
             ]);
         } catch (TelecomException $e) {
             Response::json(["errors" => $e->getMessageAsArray()], $e->getCode());

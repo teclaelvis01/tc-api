@@ -165,9 +165,7 @@ class Collection extends Model
 
         // updating the total collected cumulated for the subscriptor
         if ($this->getResult() == self::RESULT_OK) {
-            $amount = $this->getAmount() + $this->getSubscriptor()->getTotalCollectedCumulated();
-            $subscriptor->setTotalCollectedCumulated($amount);
-            $subscriptor->Update();
+            $subscriptor->recalculateColletedAcumulated();
         }
         return $this;
     }
