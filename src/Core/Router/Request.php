@@ -2,53 +2,131 @@
 
 namespace App\Core\Router;
 
-class Request extends RequestBase
-{
-    protected $request;
-    protected $data;
-    public $method;
+use App\Core\Libraries\Traits\ModelManipulation;
 
-    public function __construct($request, $flag = true)
+/**
+ * Request
+ * 
+ * @author Elvis Reyes <teclaelvis01@gmail.com>
+ * @package App\Core\Router
+ */
+class Request
+{
+    use ModelManipulation;
+    /**
+     * @var string $serverProtocol
+     */
+    public $serverProtocol;
+    /**
+     * @var string $serverProtocol
+     */
+    public $requestUri;
+    /**
+     * @var string $serverProtocol
+     */
+    public $requestMethod;
+    /**
+     * @var array $queryParams
+     */
+    public $queryParams = [];
+    /**
+     * @var array $queryBody
+     */
+    public $queryBody = [];
+
+
+    public function __construct()
     {
-        $this->request = $request;
-        $this->extracData();
-        $this->setExtraData($flag);
+        $this->bootstrap();
     }
 
-    public function extracData()
+
+    private function bootstrap()
     {
-        $this->data = [];
-        foreach ($this->request as $key => $value) {
-            if (is_object($value) || is_array($value)) {
-                $this->data[$key] = new Request($value, false);
-            } else {
-                if ($key != "http_referer") {
-                    $this->data[$key] = $value;
-                }
+        foreach ($_SERVER as $key => $value) {
+            $this->setProperty($key, $value);
+        }
+        $rawData = file_get_contents('php://input');
+        if (!empty($rawData)) {
+            $this->queryBody = json_decode($rawData, true);
+        }
+    }
+    /**
+     * set property
+     * @param mixed $property 
+     * @param mixed $value 
+     * @return void 
+     */
+    public function setProperty($property, $value)
+    {
+        $property = $this->toCamelCase($property);
+        if ($property == "requestUri") {
+            $path = strstr($value, '?', true);
+            if ($path) {
+                $this->queryParams = $this->getQueryParams($value);
+                $value = $path;
             }
         }
+        $this->$property = $value;
     }
 
-    public function setExtraData($flag)
+    /**
+     * convert query params to multidimensional array
+     * ['param1' => 'value', 'param2' => 'value2']
+     * @param string $params
+     * @return array  
+     */
+    private function getQueryParams($uri)
     {
-        if ($flag) {
-            $this->method = $_SERVER["REQUEST_METHOD"];
-            $this->data["http_referer"] = isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : null;
-            $headers = apache_request_headers();
-            // var_dump("headers",$headers);die;
-            $this->data["headers"] = new Request($headers, false);
+        $params = explode('&', substr(strstr(urldecode($uri), '?'), 1));
+        $result = [];
+        foreach ($params as $param) {
+            $param = explode("=", $param);
+            $result[$param[0]] = $param[1];
         }
+        return $result;
+    }
+    /**
+     * convert string to camel case
+     * @param string $string
+     * @return string
+     */
+    private function toCamelCase($string)
+    {
+        $result = strtolower($string);
+
+        preg_match_all('/_[a-z]/', $result, $matches);
+
+        foreach ($matches[0] as $match) {
+            $c = str_replace('_', '', strtoupper($match));
+            $result = str_replace($match, $c, $result);
+        }
+
+        return $result;
     }
 
-    public function __get($name)
+    /**
+     * get param by key
+     * @param mixed $key 
+     * @return mixed | null 
+     */
+    public function get($key)
     {
-        return isset($this->data[$name]) ? $this->data[$name] : null;
+        // verify if key exists on queryParams
+        if (array_key_exists($key, $this->queryParams)) {
+            return $this->queryParams[$key];
+        }
+        if (array_key_exists($key, $this->queryBody)) {
+            return $this->queryBody[$key];
+        }
+        return null;
     }
-    public function __set($name, $value)
-    {
-        $this->data[$name] = $value;
-    }
+
+    /**
+     * get all params
+     * @return array 
+     */
     public function all(){
-        return $this->data;
-    } 
+        return array_merge($this->queryParams, $this->queryBody);
+    }
 }

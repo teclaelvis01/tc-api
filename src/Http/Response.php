@@ -1,64 +1,34 @@
 <?php
+
 namespace App\Http;
 
-use App\Core\Helpers\ReponseMessages;
+use App\Core\Libraries\HttpResponse;
 
-class Response {
+/**
+ * @author Elvis Reyes <teclaelvis01@gmail.com>
+ * @package App\Http
+ */
+class Response extends HttpResponse
+{
 
-    public $codigo;
-    public $mensaje;
-    public $datos;
 
-    function __construct($codigo = null, $mensaje = null, $datos = null) {
-        //Obtener la respuesta por defecto por código.
-        if (isset($codigo) && empty($mensaje)) {
-            $respuesta = ReponseMessages::getMensaje($codigo);
-            $this->codigo = $respuesta->codigo;
-            $this->mensaje = $respuesta->mensaje;
-            $this->datos = $respuesta->datos;
-            return;
-        }
-
-        if (is_string($codigo)) {
-            $temp = ReponseMessages::getMensaje($codigo);
-            $codigo = $temp->codigo;
-        }
-
-        $this->codigo = $codigo;
-        $this->mensaje = $mensaje;
-        $this->datos = $datos;
-    }
-
-    public function json($obj = null) {
+    /**
+     * return a json response
+     * author: Elvis Reyes <teclaelvis01@gmail.com>
+     * @param mixed $obj 
+     * @param int $code 
+     * @return never 
+     */
+    public static function json($obj = null, $code = Response::HTTP_OK)
+    {
         header('Content-Type: application/json');
+        // add http status code
+        http_response_code($code);
         if (is_array($obj) || is_object($obj)) {
-            return json_encode($obj);
+            echo json_encode($obj);
+            die;
         }
-        return json_encode($this);
+        echo json_encode([]);
+        die;
     }
-
-    function getCodigo() {
-        return $this->codigo;
-    }
-
-    function getMensaje() {
-        return $this->mensaje;
-    }
-
-    function getDatos() {
-        return $this->datos;
-    }
-
-    function setCodigo($codigo) {
-        $this->codigo = $codigo;
-    }
-
-    function setMensaje($mensaje) {
-        $this->mensaje = $mensaje;
-    }
-
-    function setDatos($datos) {
-        $this->datos = $datos;
-    }
-
 }

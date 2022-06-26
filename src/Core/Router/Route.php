@@ -2,18 +2,21 @@
 
 namespace App\Core\Router;
 
+use App\Http\Response;
+
+/**
+ * Class Route
+ * @author Elvis Reyes <teclaelvis01@gmail.com>
+ * @package App\Core\Router
+ */
 class Route
 {
 
     /**
-     * 
+     * list of uris class registered
      * @var Uri[] $uris
      */
     public static $uris = [];
-
-    function __construct()
-    {
-    }
 
     public static function add($method, $uri, $fuction = null)
     {
@@ -48,23 +51,22 @@ class Route
         $uri = (strlen($uri) > 0) ? $uri : "/";
         return $uri;
     }
-
-    public static function run(){
-        $request = RequestBase::getInstance();
+    /** 
+     * Initialize the router
+     */
+    public static function run()
+    {
+        $request = Request::getInstance();
         $method = $request->requestMethod;
-        // $uri = isset($_GET['uri']) ? $_GET['uri'] : "";
         $uri = self::parseUri($request->requestUri);
 
         foreach (Route::$uris as $key => $value) {
-            // if($key ==1){
-            //     var_dump("uri",$uri,$value->match($uri),$value);die;
-            // }
-            if ($value->match($uri)){
+            if ($value->match($uri)) {
                 return $value->call();
             }
         }
 
         header("Content-Type: application/json");
-        echo json_encode(["message" => "Route Not found", "status" => 404, "method" => $method, "uri" => $uri]);
+        echo Response::json(["Error" => "Route Not Found", "method" => $method, "uri" => $uri], Response::HTTP_NOT_FOUND);
     }
 }

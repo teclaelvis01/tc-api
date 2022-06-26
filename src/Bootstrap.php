@@ -4,22 +4,16 @@
  * Set error reporting level.
  */
 
-use App\Core\Router\RequestBase;
 use App\Core\Router\Route;
-use App\Core\Router\Uri;
+use App\Core\Database\DB;
+
+require_once '../vendor/adodb/adodb-php/adodb-active-record.inc.php';
 
 error_reporting(E_ALL);
-
 /**
  * Set display errors.
  */
 ini_set('display_errors', 1);
-
-/**
- * Composer autoload.
- */
-// require __DIR__ . '/../vendor/autoload.php';
-
 
 /**
  * Define root folder
@@ -38,8 +32,20 @@ define('APP_PATH', __DIR__);
 define('PATH_ROUTES', __DIR__ . "/Routes/");
 define('PATH_CONTROLLERS', __DIR__ . "/Http/Controllers/");
 
-$rutas = scandir(PATH_ROUTES);
+// database
+$dbCredencials = [
+    "driver" => "mysql",
+    "host" => "mariadb",
+    "user" => "root",
+    "password" => "root",
+    "database" => "telecoming",
+];
+$db = DB::run($dbCredencials);
 
+/**
+ * LOAD ROUTES
+ */
+$rutas = scandir(PATH_ROUTES);
 foreach ($rutas as $archivo) {
     $rutaArchivo = realpath(PATH_ROUTES . $archivo);
     if (is_file($rutaArchivo)) {
@@ -47,6 +53,4 @@ foreach ($rutas as $archivo) {
     }
 }
 
-// var_dump(Route::class);
-// die;
 Route::run();

@@ -2,10 +2,14 @@
 
 namespace App\Core\Router;
 
-use App\Http\Response;
-use Closure;
-use ReflectionMethod;
 
+use Closure;
+
+/**
+ * Class Uri
+ * @author Elvis Reyes <teclaelvis01@gmail.com>
+ * @package App\Core\Router
+ */
 class Uri
 {
     var $uri;
@@ -38,7 +42,7 @@ class Uri
         if (!preg_match($regex, urldecode($uri), $matches)) {
             return false;
         }
-        if ($this->method != RequestBase::getInstance()->requestMethod && $this->method != "ANY") {
+        if ($this->method != Request::getInstance()->requestMethod && $this->method != "ANY") {
             return false;
         }
 
@@ -49,7 +53,7 @@ class Uri
 
     private function execFunction()
     {
-        $this->matches[] = RequestBase::getInstance();
+        $this->matches[] = Request::getInstance();
         $this->response = call_user_func_array($this->function, $this->matches);
     }
     private function getParts()
@@ -76,7 +80,7 @@ class Uri
             return;
         }
         $classInstance = new $class();
-        $classInstance->setRequest(RequestBase::getInstance());
+        $classInstance->setRequest(Request::getInstance());
         
         $launch = [$classInstance, $method];
         if (is_callable($launch)){
@@ -112,7 +116,11 @@ class Uri
         require_once $file;
         return true;
     }
-
+    /**
+     * Initialize the router with controller and method to execute
+     * or a closure and method to execute
+     * @return void 
+     */
     public function call()
     {
         try {
@@ -123,19 +131,8 @@ class Uri
             if (is_string($this->function)) {
                 $this->execFunctionFromController();
             }
-            $this->printResponse();
         } catch (\Exception $e) {
             echo "ERROR: " . $e->getMessage();
-        }
-    }
-
-    private function printResponse()
-    {
-        if (is_string($this->response)) {
-            echo $this->response;
-        } else if (is_array($this->response) || is_object($this->response)) {
-            $res = new Response();
-            echo $res->json($this->response);
         }
     }
 }

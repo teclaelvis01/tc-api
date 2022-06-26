@@ -14,5 +14,7 @@
     ],
     "license": "MIT",
     "minimum-stability": "dev",
-    "require": {}
+    "require": {
+        "adodb/adodb-php": "dev-master"
+    }
 }
