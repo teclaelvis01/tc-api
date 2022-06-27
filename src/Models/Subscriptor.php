@@ -163,7 +163,7 @@ class Subscriptor extends Model
         $this->setEmail($request->get('email'));
         $this->setStatus(Subscriptor::STATUS_ONLINE);
         $this->setTotalCollectedCumulated(0);
-        $this->Save();
+        $this->saveDb();
         return $this;
     }
     /**
@@ -175,7 +175,7 @@ class Subscriptor extends Model
     {
         $this->setDeletedAt($request->get('deleted_at'));
         $this->setStatus(Subscriptor::STATUS_DELETED);
-        $this->Save();
+        $this->saveDb();
         return $this;
     }
 
@@ -189,6 +189,6 @@ class Subscriptor extends Model
         $result = $db->query($sql);
         $total = $result ? $result->total_collected_cumulated : 0;
         $this->setTotalCollectedCumulated($total);
-        $this->Update();
+        $this->updateDb();
     }
 }

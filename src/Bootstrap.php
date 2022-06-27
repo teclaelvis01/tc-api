@@ -28,6 +28,7 @@ define('ROOT_PATH', dirname(__DIR__));
  * @var string
  */
 define('APP_PATH', __DIR__);
+define('APP_LOGS', dirname(__DIR__) . '/logs');
 
 define('PATH_ROUTES', __DIR__ . "/Routes/");
 define('PATH_CONTROLLERS', __DIR__ . "/Http/Controllers/");

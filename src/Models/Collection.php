@@ -161,7 +161,7 @@ class Collection extends Model
         if (!$subscriptor) {
             throw new \Exception("Subscriptor not exist", Response::HTTP_CONFLICT);
         }
-        $this->Save();
+        $this->saveDb();
 
         // updating the total collected cumulated for the subscriptor
         if ($this->getResult() == self::RESULT_OK) {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Core\Libraries\Exceptions\TelecomException;
+use App\Core\Libraries\Logguer\Logguer;
 use App\Core\Libraries\Validator;
 use App\Http\Response;
 use App\Models\Collection;
@@ -44,8 +45,10 @@ class NotificationsController extends BaseController
                 "message" => ["the subscriptor has been created"],
             ]);
         } catch (TelecomException $e) {
+            Logguer::error(["method" => "[high] TelecomException ","message" => $e->getMessageAsArray()]);
             Response::json(["errors" => $e->getMessageAsArray()], $e->getCode());
         } catch (\Exception $e) {
+            Logguer::error(["method" => "[high] Exception ","message" => $e->getMessage()]);
             Response::json(["error" => $e->getMessage()], $e->getCode());
         }
     }
@@ -79,8 +82,10 @@ class NotificationsController extends BaseController
                 "message" => ["the subscriptor has been down"],
             ]);
         } catch (TelecomException $e) {
+            Logguer::error(["method" => "[down] TelecomException ","message" => $e->getMessageAsArray()]);
             Response::json(["errors" => $e->getMessageAsArray()], $e->getCode());
         } catch (\Exception $e) {
+            Logguer::error(["method" => "[down] Exception ","message" => $e->getMessage()]);
             Response::json(["error" => $e->getMessage()], $e->getCode());
         }
     }
@@ -110,14 +115,15 @@ class NotificationsController extends BaseController
                 throw new \Exception("The record has exist !!!", Response::HTTP_CONFLICT);
             }
             $collection->payment($this->request);
-
             Response::json([
                 "status" => "success",
                 "message" => ["payment has been created"],
             ]);
         } catch (TelecomException $e) {
+            Logguer::error(["method" => "[payment] TelecomException ","message" => $e->getMessageAsArray()]);
             Response::json(["errors" => $e->getMessageAsArray()], $e->getCode());
         } catch (\Exception $e) {
+            Logguer::error("[payment] Exception ".$e->getMessage());
             Response::json(["error" => $e->getMessage()], $e->getCode());
         }
     }

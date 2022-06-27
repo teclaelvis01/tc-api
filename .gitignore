@@ -1,3 +1,4 @@
 /vendor
 .docker/
 composer.phar
+/logs
