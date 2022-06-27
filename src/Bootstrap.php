@@ -34,13 +34,7 @@ define('PATH_ROUTES', __DIR__ . "/Routes/");
 define('PATH_CONTROLLERS', __DIR__ . "/Http/Controllers/");
 
 // database
-$dbCredencials = [
-    "driver" => "mysql",
-    "host" => "mariadb",
-    "user" => "root",
-    "password" => "root",
-    "database" => "telecoming",
-];
+$dbCredencials = require_once(__DIR__ . '/Config/database.conf.php');
 $db = DB::run($dbCredencials);
 
 /**

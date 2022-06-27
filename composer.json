@@ -9,12 +9,15 @@
     },
     "authors": [
         {
-            "name": "Elvis Reyes"
+            "name": "Elvis Reyes",
+            "email": "teclaelvis01@gmail.com",
+            "role": "Author"
         }
     ],
     "license": "MIT",
     "minimum-stability": "dev",
     "require": {
+        "php": "^7.1",
         "adodb/adodb-php": "dev-master"
     }
 }

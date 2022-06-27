@@ -1,0 +1,497 @@
+{
+	"info": {
+		"_postman_id": "3995ffda-7eea-440e-b270-5c322488048a",
+		"name": "Tekecomapi",
+		"description": "Prueba técnica para Telecom",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2447850"
+	},
+	"item": [
+		{
+			"name": "new notifications",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"subscriptor_id\": 1,\n    \"created_at\": \"2022-02-12\",\n    \"email\": \"teclaelvis01@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/notifications/high",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"notifications",
+						"high"
+					]
+				},
+				"description": "Permite crear una notificación\n\n**Paramentros**\n\n*   subscriptor_id : required|integer\n*   created_at: required|date (yyyy-mm-dd)\n*   email: required|email"
+			},
+			"response": [
+				{
+					"name": "new notifications ok",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"subscriptor_id\": 1,\n    \"created_at\": \"2022-02-12\",\n    \"email\": \"teclaelvis01@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/notifications/high",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"notifications",
+								"high"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 26 Jun 2022 22:56:33 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.3.13"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"success\",\n    \"message\": [\n        \"the subscriptor has been created\"\n    ]\n}"
+				},
+				{
+					"name": "new notifications has exist",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"subscriptor_id\": 1,\n    \"created_at\": \"2022-02-12\",\n    \"email\": \"teclaelvis01@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/notifications/high",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"notifications",
+								"high"
+							]
+						}
+					},
+					"status": "Conflict",
+					"code": 409,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 26 Jun 2022 22:57:02 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.3.13"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"The record has exist !!!\"\n}"
+				},
+				{
+					"name": "new notifications params errors",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"subscriptor_id\": null,\n    \"created_at\": \"2022-02-12 89\",\n    \"email\": \"@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/notifications/high",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"notifications",
+								"high"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 26 Jun 2022 22:58:15 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.3.13"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errors\": {\n        \"subscriptor_id\": [\n            \"The subscriptor_id field not found\"\n        ],\n        \"created_at\": [\n            \"This field created_at is not valid date\"\n        ],\n        \"email\": [\n            \"This field email is not valid email\"\n        ]\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "down notifications",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"subscriptor_id\": \"1\",\n    \"deleted_at\": \"2022-07-12\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/notifications/down",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"notifications",
+						"down"
+					]
+				},
+				"description": "Permite dar de baja una subscripción\n\n**Parámetros**\n\n*   subscriptor_id: required|integer\n*   deleted_at: required|date (yyyy-mm-dd)"
+			},
+			"response": [
+				{
+					"name": "down notifications ok",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"subscriptor_id\": \"1\",\n    \"deleted_at\": \"2022-07-12\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/notifications/down",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"notifications",
+								"down"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 26 Jun 2022 22:59:47 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.3.13"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"success\",\n    \"message\": [\n        \"the subscriptor has been down\"\n    ]\n}"
+				},
+				{
+					"name": "down notifications not exist",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"subscriptor_id\": \"3\",\n    \"deleted_at\": \"2022-07-12\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/notifications/down",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"notifications",
+								"down"
+							]
+						}
+					},
+					"status": "Conflict",
+					"code": 409,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 26 Jun 2022 23:00:43 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.3.13"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"The record not exist !!!\"\n}"
+				}
+			]
+		},
+		{
+			"name": "payment notifications",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"collection_id\": 1,\n    \"subscriptor_id\": 1,\n    \"amount\": 120,\n    \"created_at\": \"2020-02-13\",\n    \"result\": \"OK\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/notifications/payment",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"notifications",
+						"payment"
+					]
+				},
+				"description": "Realiza el cobro a un subscriptor\n\n**Parámetros**\n\n*   collection_id: required|integer\n*   subscriptor_id: required|integer\n*   created_at: required|date (yyyy-mm-dd)\n*   result: required|string. (Solo acepta OK o KO)\n*   amount: required|numeric"
+			},
+			"response": [
+				{
+					"name": "payment notifications ok",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"collection_id\": 1,\n    \"subscriptor_id\": 1,\n    \"amount\": 120,\n    \"created_at\": \"2020-02-13\",\n    \"result\": \"OK\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/notifications/payment",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"notifications",
+								"payment"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 26 Jun 2022 23:02:47 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.3.13"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"success\",\n    \"message\": [\n        \"payment has been created\"\n    ]\n}"
+				},
+				{
+					"name": "payment notifications has exist",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"collection_id\": 1,\n    \"subscriptor_id\": 1,\n    \"amount\": 120,\n    \"created_at\": \"2020-02-13\",\n    \"result\": \"OK\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/notifications/payment",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"notifications",
+								"payment"
+							]
+						}
+					},
+					"status": "Conflict",
+					"code": 409,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 26 Jun 2022 23:03:10 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.3.13"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"The record has exist !!!\"\n}"
+				}
+			]
+		}
+	]
+}
