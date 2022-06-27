@@ -2,3 +2,4 @@
 .docker/
 composer.phar
 /logs
+*.zip
